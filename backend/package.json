@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "devDependencies": {
+    "@types/express": "^5.0.0",
     "@types/node": "^22.13.10",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
@@ -15,5 +16,8 @@
     "build": "rimraf ./dist && tsc --build ./tsconfig.json",
     "start": "node ./dist/index.js",
     "prettify": "prettier --loglevel warn --cache --write '{src/**/*,*}.{ts,tsx,js,json,yml,scss}' '!**/{node_modules,dist}/**/*'"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
   }
 }
