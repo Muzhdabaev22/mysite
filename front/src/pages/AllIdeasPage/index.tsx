@@ -11,6 +11,10 @@ export const AllIdeasPage = () => {
     if (isError) {
         return <div>Error: {error.message}</div>
     }
+
+    if (isFetching) {
+        return <div>Fetching...</div>
+    }
     return (
         <div>
             <h1>All ideas</h1>

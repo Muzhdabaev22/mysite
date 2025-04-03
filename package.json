@@ -5,10 +5,15 @@
     "scripts": {
         "b": "pnpm --filter @mysite/backend",
         "f": "pnpm --filter @mysite/front",
-        "types": "concurrently 'pnpm b types' 'pnpm f types'"
+        "types": "concurrently 'pnpm b types' 'pnpm f types'",
+        "lint": "concurrently 'pnpm b lint' 'pnpm w lint'"
     },
     "devDependencies": {
         "concurrently": "^9.1.2",
+        "eslint": "^9.23.0",
+        "eslint-config-prettier": "^10.1.1",
+        "eslint-config-react-app": "^7.0.1",
+        "eslint-config-standard-with-typescript": "^43.0.1",
         "prettier": "^3.5.3",
         "rimraf": "^6.0.1",
         "ts-node": "^10.9.2",
