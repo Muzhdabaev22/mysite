@@ -19,5 +19,9 @@
         "ts-node": "^10.9.2",
         "ts-node-dev": "^2.0.0",
         "typescript": "^5.8.2"
+    },
+    "dependencies": {
+        "react-dom": "^19.0.0",
+        "react-router-dom": "^7.4.1"
     }
 }
