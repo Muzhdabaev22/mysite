@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      b:
+        specifier: ^2.0.1
+        version: 2.0.1
       react-dom:
         specifier: ^19.0.0
         version: 19.0.0(react@19.0.0)
@@ -1465,6 +1468,10 @@ packages:
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
     engines: {node: '>= 0.4'}
+
+  b@2.0.1:
+    resolution: {integrity: sha512-JBWAj6f91ocNLbdg1jCGrxHXSWbQDsxgqVmKeO0TellEcq9LCvJ97iWG6p3otCt/v08/hHrWwAB9vNYS9y70IQ==}
+    engines: {node: '>= 0.8.0'}
 
   babel-plugin-macros@3.1.0:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}
@@ -4653,6 +4660,8 @@ snapshots:
   axe-core@4.10.3: {}
 
   axobject-query@4.1.0: {}
+
+  b@2.0.1: {}
 
   babel-plugin-macros@3.1.0:
     dependencies:
