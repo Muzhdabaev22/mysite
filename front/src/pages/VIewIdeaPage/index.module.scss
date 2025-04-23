@@ -1,6 +1,5 @@
-@import '../../styles/_vars.scss';
-@import '../../styles/_mixins.scss';
-
+@use '../../styles/_vars.scss' as *;
+@use '../../styles/_mixins.scss' as *;
 
 .text {
   font-size: 14px;

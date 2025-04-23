@@ -1,7 +1,6 @@
-@import './_vars.scss';
-@import '../../node_modules/include-media/dist/_include-media.scss';
+@use './vars' as vars; 
 
-@mixin link($color: $blue, $hoverColor: $red) {
+@mixin link($color: vars.$blue, $hoverColor: vars.$red) {
   color: $color;
   transition: color 200ms ease;
   &:hover,
