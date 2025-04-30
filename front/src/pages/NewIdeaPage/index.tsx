@@ -9,7 +9,8 @@ import { zCreateIdeaTrpcInput } from '@mysite/backend/src/router/createIdea/inpu
 import { useState } from 'react'
 
 export const NewIdeaPage = () => {
-  const [successMessageVisible, setSuccessMessageVisible] = useState(false)
+    const [successMessageVisible, setSuccessMessageVisible] = useState(false)
+    const [submittingError, setSubmittingError] = useState<string | null>(null)
     const createIdea = trpc.createIdea.useMutation()
     const formik = useFormik({
       initialValues: {
@@ -22,14 +23,20 @@ export const NewIdeaPage = () => {
         zCreateIdeaTrpcInput
       ),
       onSubmit: async (values) => {
-        await createIdea.mutateAsync(values)
-        formik.resetForm()
-        setSuccessMessageVisible(true)
-        setTimeout(() => {
-          setSuccessMessageVisible(false)
-        }, 3000)
-      },
-    
+        try {
+          await createIdea.mutateAsync(values)
+          formik.resetForm()
+          setSuccessMessageVisible(true)
+          setTimeout(() => {
+            setSuccessMessageVisible(false)
+          }, 3000)
+        } catch (error: any) {
+          setSubmittingError(error.message)
+          setTimeout(() => {
+            setSubmittingError(null)
+          }, 3000)
+        }
+      }
     })
 
     return (
@@ -41,10 +48,11 @@ export const NewIdeaPage = () => {
         
         <Input name='name' label='Name' formik={formik} />
         <Input name='nick' label='Nick' formik={formik} />
-        <Input name='description' label='Desctiption' formik={formik} />
+        <Input name='description' label='Desctiption' formik={formik} maxWidth={500}/>
         <TextArea name='text' label='Text' formik={formik} />
         {!formik.isValid && !!formik.submitCount && <div style={{ color: 'red' }}>Some fields are invalid</div>}
         {successMessageVisible && <div style={{color: 'green'}}>Idea created!</div>}
+        {submittingError && <div style={{color: 'red'}}>{submittingError}</div>}
         <button type="submit" disabled={formik.isSubmitting}>
         {formik.isSubmitting ? 'Submitting...' : 'Create Idea'}
         </button>
