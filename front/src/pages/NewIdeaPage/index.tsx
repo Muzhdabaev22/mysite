@@ -1,4 +1,3 @@
-import css from './index.module.scss'
 import { Segment } from '../../components/Segment'
 import { Input } from '../../components/Input'
 import { TextArea } from '../../components/TextArea'
@@ -7,6 +6,9 @@ import { withZodSchema } from 'formik-validator-zod'
 import { trpc } from '../../lib/trpc'
 import { zCreateIdeaTrpcInput } from '@mysite/backend/src/router/createIdea/input'
 import { useState } from 'react'
+import { Alert } from '../../components/Alert'
+import { Button } from '../../components/Button'
+import { FormItems } from '../../components/FormItems'
 
 export const NewIdeaPage = () => {
     const [successMessageVisible, setSuccessMessageVisible] = useState(false)
@@ -45,17 +47,16 @@ export const NewIdeaPage = () => {
           onSubmit={(e) => {
           e.preventDefault()
           formik.handleSubmit()}}>
-        
-        <Input name='name' label='Name' formik={formik} />
-        <Input name='nick' label='Nick' formik={formik} />
-        <Input name='description' label='Desctiption' formik={formik} maxWidth={500}/>
-        <TextArea name='text' label='Text' formik={formik} />
-        {!formik.isValid && !!formik.submitCount && <div style={{ color: 'red' }}>Some fields are invalid</div>}
-        {successMessageVisible && <div style={{color: 'green'}}>Idea created!</div>}
-        {submittingError && <div style={{color: 'red'}}>{submittingError}</div>}
-        <button type="submit" disabled={formik.isSubmitting}>
-        {formik.isSubmitting ? 'Submitting...' : 'Create Idea'}
-        </button>
+        <FormItems>
+          <Input name='name' label='Name' formik={formik} />
+          <Input name='nick' label='Nick' formik={formik} />
+          <Input name='description' label='Desctiption' formik={formik} />
+          <TextArea name='text' label='Text' formik={formik} maxWidth={500}/>
+          {!formik.isValid && !!formik.submitCount && <div style={{ color: 'red' }}>Some fields are invalid</div>}
+          {successMessageVisible && <Alert color='green'>Idea created!</Alert>}
+          {submittingError && <Alert color='red'>{submittingError}</Alert>}
+          <Button loading={formik.isSubmitting}>Create Idea</Button>
+        </FormItems>
         </form>
       </Segment>
     )

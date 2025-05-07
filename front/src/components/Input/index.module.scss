@@ -16,8 +16,8 @@
     display: block;
     padding: 7px;
     border: 1px solid $black;
-    border-radius: 3px;
-    background-color: $white;
+    border-radius: $borderRadiusSmall;
+    background-color: $black;
     outline: none;
     width: 100%;
     max-width: 200px;
