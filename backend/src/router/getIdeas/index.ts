@@ -1,6 +1,5 @@
- import { trpc } from "../../lib/trpc"
- import { ideas } from "../../lib/ideas"
- import _ from 'lodash'
+import { trpc } from "../../lib/trpc"
+import _ from 'lodash'
 
 export const getIdeasTrpcRoute = trpc.procedure.query(async ({ctx}) => {
     const ideas = await ctx.prisma.idea.findMany({
@@ -9,7 +8,11 @@ export const getIdeasTrpcRoute = trpc.procedure.query(async ({ctx}) => {
             nick: true,
             name: true,
             description: true,
+        },
+        orderBy: {
+            createdAt: 'desc'
         }
     })
-    return { ideas }
+    
+    return {ideas}
 })

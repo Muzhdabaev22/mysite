@@ -14,8 +14,7 @@ export const AllIdeasPage = () => {
     if (isError) {
         return <div>Error: {error.message}</div>
     }
-
-
+    
     return (
         <Segment title="All ideas">
           <div className={css.ideas}>
