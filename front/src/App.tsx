@@ -9,6 +9,7 @@ import './styles/global.scss'
 import { SignUpPage } from "./pages/SignUpPage"
 import { SignInPage } from "./pages/SignInPage"
 import { SignOutPage } from "./pages/SignOutPage"
+import { EditIdeaPage } from "./pages/EditIdeaPage"
 
 export const App = () => {
     return (
@@ -22,6 +23,7 @@ export const App = () => {
                         <Route path={routes.NewIdeaRoute()} element={<NewIdeaPage />} />
                         <Route path={routes.getSignUpRoute()} element={<SignUpPage />} />
                         <Route path={routes.getSignInRoute()} element={<SignInPage />} />
+                        <Route path={routes.getEditIdeaRoute(routes.editIdeaRouteParams)} element={<EditIdeaPage />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
