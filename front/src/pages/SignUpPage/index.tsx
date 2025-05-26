@@ -7,12 +7,12 @@ import { Input } from '../../components/Input'
 import { Segment } from '../../components/Segment'
 import { trpc } from '../../lib/trpc'
 import Cookies from 'js-cookie'
-import { getAllIdeasRoute } from '../../lib/routes'
-import { useNavigate } from 'react-router-dom'
 import { useForm } from '../../lib/form'
+import { withPageWrapper } from '../../lib/pageWrapper'
 
-export const SignUpPage = () => {
-  const navigate = useNavigate()
+export const SignUpPage = withPageWrapper({
+  redirectAuthorized: true,
+})(() => {
   const trpcUtils = trpc.useUtils()
   const signUp = trpc.signUp.useMutation()
   const {formik, alertProps, buttonProps} = useForm({
@@ -39,7 +39,6 @@ export const SignUpPage = () => {
         const { token } = await signUp.mutateAsync(values)
         Cookies.set('token', token, { expires: 99999 })
         void trpcUtils.invalidate()
-        navigate(getAllIdeasRoute())
     },
     resetOnSuccess: false
   })
@@ -57,4 +56,4 @@ export const SignUpPage = () => {
       </form>
     </Segment>
   )
-}
+})

@@ -7,8 +7,12 @@ import { zCreateIdeaTrpcInput } from '@mysite/backend/src/router/createIdea/inpu
 import { Alert } from '../../components/Alert'
 import { Button } from '../../components/Button'
 import { FormItems } from '../../components/FormItems'
+import { withPageWrapper } from '../../lib/pageWrapper'
 
-export const NewIdeaPage = () => {
+
+export const NewIdeaPage = withPageWrapper({
+  authorizedOnly: true,
+})(() => {
     const createIdea = trpc.createIdea.useMutation()
     const { formik, buttonProps, alertProps } = useForm({
       initialValues: {
@@ -43,4 +47,4 @@ export const NewIdeaPage = () => {
         </form>
       </Segment>
     )
-}
+})
