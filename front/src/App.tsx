@@ -1,16 +1,18 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { TrpcProvider } from "./lib/trpc"
-import { AllIdeasPage } from "./pages/AllIdeasPage"
-import { ViewIdeaPage } from "./pages/VIewIdeaPage"
-import { NewIdeaPage } from "./pages/NewIdeaPage"
+import { AllIdeasPage } from "./pages/ideas/AllIdeasPage"
+import { ViewIdeaPage } from "./pages/ideas/ViewIdeaPage"
+import { NewIdeaPage } from "./pages/ideas/NewIdeaPage"
 import * as routes from "./lib/routes"
 import { Layout } from './components/Layout'
 import './styles/global.scss'
-import { SignUpPage } from "./pages/SignUpPage"
-import { SignInPage } from "./pages/SignInPage"
-import { SignOutPage } from "./pages/SignOutPage"
-import { EditIdeaPage } from "./pages/EditIdeaPage"
+import { SignUpPage } from "./pages/auth/SignUpPage"
+import { SignInPage } from "./pages/auth/SignInPage"
+import { SignOutPage } from "./pages/auth/SignOutPage"
+import { EditIdeaPage } from "./pages/ideas/EditIdeaPage"
 import { AppContextProvider } from "./lib/ctx"
+import { NotFoundPage } from "./pages/other/NotFoundPage"
+import { EditProfilePage } from "./pages/auth/EditProfilePage"
 export const App = () => {
     return (
         <TrpcProvider>
@@ -24,7 +26,9 @@ export const App = () => {
                             <Route path={routes.NewIdeaRoute()} element={<NewIdeaPage />} />
                             <Route path={routes.getSignUpRoute()} element={<SignUpPage />} />
                             <Route path={routes.getSignInRoute()} element={<SignInPage />} />
+                            <Route path={routes.getEditProfileRoute()} element={<EditProfilePage />} />
                             <Route path={routes.getEditIdeaRoute(routes.editIdeaRouteParams)} element={<EditIdeaPage />} />
+                            <Route path="*" element={<NotFoundPage />} />
                         </Route>
                     </Routes>
                 </BrowserRouter>
