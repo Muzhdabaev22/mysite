@@ -54,6 +54,7 @@ export const AllIdeasPage = () => {
                     }
                     description={idea.description}
                   />
+                  Likes: {idea.likesCount}
                 </div>
               ))}
           </InfiniteScroll>

@@ -9,6 +9,7 @@ import { updateIdeaTrpcRoute } from "./ideas/updateIdea"
 import { inferRouterInputs, inferRouterOutputs } from "@trpc/server"
 import { updateProfileTrpcRoute } from "./auth/updateProfile"
 import { updatePasswordTrpcRoute } from "./auth/updatePassword"
+import { setIdeaLikeTrpcRoute } from "./ideas/setIdeaLike"
 
 export const trpcRouter = trpc.router({
   getIdea: getIdeaTrpcRoute,
@@ -20,6 +21,7 @@ export const trpcRouter = trpc.router({
   updateIdea: updateIdeaTrpcRoute,
   updateProfile: updateProfileTrpcRoute,
   updatePassword: updatePasswordTrpcRoute,
+  setIdeaLike: setIdeaLikeTrpcRoute,
 })
 
 export type TrpcRouter = typeof trpcRouter
