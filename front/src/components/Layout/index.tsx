@@ -2,6 +2,11 @@ import { Link, Outlet } from 'react-router-dom'
 import { getAllIdeasRoute, getSignUpRoute, NewIdeaRoute, getSignInRoute, getSignOutRoute, getEditProfileRoute } from '../../lib/routes'
 import css from './index.module.scss'
 import { useMe } from '../../lib/ctx'
+import { createRef} from 'react'
+
+export const layoutContentElRef = createRef<HTMLDivElement>()
+
+
 
 export const Layout = () => {
   const me = useMe()
@@ -50,7 +55,7 @@ export const Layout = () => {
           )}
         </ul>
       </div>
-      <div className={css.content}>
+      <div className={css.content} ref={layoutContentElRef}>
         <Outlet />
       </div>
     </div>

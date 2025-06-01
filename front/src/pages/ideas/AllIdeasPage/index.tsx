@@ -3,34 +3,62 @@ import { Link } from "react-router-dom"
 import { getViewIdeaRoute } from "../../../lib/routes"
 import css from './index.module.scss'
 import { Segment } from "../../../components/Segment"
+import { Alert } from "../../../components/Alert"
+import InfiniteScroll from 'react-infinite-scroller'
+import { layoutContentElRef } from "../../../components/Layout"
+import { Loader } from "../../../components/Loader"
 
 export const AllIdeasPage = () => {
-    const { data, error, isLoading, isFetching, isError } = trpc.getIdeas.useQuery()
-    
-    if (isLoading || isFetching) {
-        return <div>Loading...</div>
-    }
-
-    if (isError) {
-        return <div>Error: {error.message}</div>
-    }
+    const { data, error, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage, isRefetching } = trpc.getIdeas.useInfiniteQuery({
+      limit: 2
+    }, {
+      getNextPageParam: (lastPage) => {
+        return lastPage.nextCursor
+      }
+    })
     
     return (
         <Segment title="All ideas">
+          {isLoading || isRefetching? (
+            <Loader type='section' />
+          ) : isError ? (
+            <Alert color='red'>{error.message}</Alert>
+          ): ( 
           <div className={css.ideas}>
-            {data.ideas.map((idea) => (
-              <div className={css.idea} key={idea.nick}>
-                <Segment size={2} 
-                  title={
-                    <Link className={css.ideaLink} to={getViewIdeaRoute({ idea: idea.nick })}>
-                      {idea.name}
-                    </Link>
-                  }
-                  description={idea.description}
-                  />
+             <InfiniteScroll
+            threshold={250}
+            loadMore={() => {
+              if (!isFetchingNextPage && hasNextPage) {
+                void fetchNextPage()
+              }
+            }}
+            hasMore={hasNextPage}
+            loader={
+              <div className={css.more} key="loader">
+               <Loader type='section' />
               </div>
-            ))}
-          </div>
-        </Segment>
+            }
+            getScrollParent={() => layoutContentElRef.current}
+            useWindow={(layoutContentElRef.current && getComputedStyle(layoutContentElRef.current).overflow) !== 'auto'}
+          >
+            {data.pages
+              .flatMap((page) => page.ideas)
+              .map((idea) => (
+                <div className={css.idea} key={idea.nick}>
+                  <Segment
+                    size={2}
+                    title={
+                      <Link className={css.ideaLink} to={getViewIdeaRoute({ idea: idea.nick })}>
+                        {idea.name}
+                      </Link>
+                    }
+                    description={idea.description}
+                  />
+                </div>
+              ))}
+          </InfiniteScroll>
+        </div>
+      )}
+    </Segment>
       )
 } 
