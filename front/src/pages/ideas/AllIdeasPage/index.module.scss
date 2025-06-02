@@ -1,8 +1,8 @@
 @use '../../../styles/_vars.scss' as *;
 @use '../../../styles/_mixins.scss' as *;
 
-.title {
-  @include h1;
+.filter {
+  margin-bottom: 20px;
 }
 
 .ideas {

@@ -3,7 +3,7 @@ import css from './index.module.scss'
 import cn from 'classnames'
 
 
-export const Input = ({name, label, formik, maxWidth, type}: {name: string, label: string, formik: FormikProps<any>; maxWidth?: number,type?: 'text' | 'password' }) => {
+export const Input = ({name, label, formik, maxWidth, type}: {name: string, label: string, formik: FormikProps<any>; maxWidth?: number | string,type?: 'text' | 'password' }) => {
     const value = formik.values[name]
     const error = formik.errors[name] as string | undefined
     const touched = formik.touched[name]
