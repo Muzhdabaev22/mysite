@@ -1,12 +1,16 @@
 import { format } from 'date-fns/format'
 import { useParams } from 'react-router-dom'
-import { LinkButton } from '../../../components/Button'
+import { Button, LinkButton } from '../../../components/Button'
 import { Segment } from '../../../components/Segment'
 import { getEditIdeaRoute, type ViewIdeaRouteParams } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 import css from './index.module.scss'
 import { withPageWrapper } from '../../../lib/pageWrapper'
 import { TrpcRouterOutput } from '@mysite/backend/src/router'
+import { canBlockIdeas, canEditIdea } from '@mysite/backend/src/utils/can'
+import { useForm } from '../../../lib/form'
+import { FormItems } from '../../../components/FormItems'
+import { Alert } from '../../../components/Alert'
 
 const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['idea']> }) => {
   const trpcUtils = trpc.useContext()
@@ -41,6 +45,28 @@ const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['i
   )
 }
 
+const BlockIdea = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['idea']> }) => {
+  const blockIdea = trpc.blockIdea.useMutation()
+  const trpcUtils = trpc.useContext()
+  const { formik, alertProps, buttonProps } = useForm({
+    onSubmit: async () => {
+      await blockIdea.mutateAsync({ ideaId: idea.id })
+      await trpcUtils.getIdea.refetch({ idea: idea.nick })
+    },
+  })
+  return (
+    <form onSubmit={formik.handleSubmit}>
+      <FormItems>
+        <Alert {...alertProps} />
+        <Button color="red" {...buttonProps}>
+          Block Idea
+        </Button>
+      </FormItems>
+    </form>
+  )
+}
+
+
 export const ViewIdeaPage = withPageWrapper({
   useQuery: () => {
     const { idea } = useParams() as ViewIdeaRouteParams
@@ -70,9 +96,15 @@ export const ViewIdeaPage = withPageWrapper({
         </>
       )}
     </div>
-    {me?.id === idea.authorId && (
+    {canEditIdea(me, idea) && (
       <div className={css.editButton}>
         <LinkButton to={getEditIdeaRoute({ idea: idea.nick })}>Edit Idea</LinkButton>
+      </div>
+    )}
+
+    {canBlockIdeas(me) && (
+      <div className={css.blockIdea}>
+        <BlockIdea idea={idea} />
       </div>
     )}
   </Segment>

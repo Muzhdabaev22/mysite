@@ -11,6 +11,8 @@ import { TextArea } from '../../../components/TextArea'
 import { type EditIdeaRouteParams, getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 import { withPageWrapper } from '../../../lib/pageWrapper'
+import { canEditIdea } from '@mysite/backend/src/utils/can'
+
 
 export const EditIdeaPage = withPageWrapper({
   authorizedOnly: true,
@@ -21,7 +23,7 @@ export const EditIdeaPage = withPageWrapper({
 
   setProps: ({ queryResult, ctx, checkExists, checkAccess }) => {
     const idea = checkExists(queryResult.data.idea, 'Idea not found')
-    checkAccess(ctx.me?.id === idea.authorId, 'An idea can only be edited by the author')
+    checkAccess(canEditIdea(ctx.me, idea), 'An idea can only be edited by the author')
     return {
       idea,
     }

@@ -1,27 +1,42 @@
 @use '../../styles/_vars' as *;
 @use  '../../styles/_mixins' as *;
-
+@use 'sass:color';
 
 .button {
-    padding: 8px 15px;
-    color: $white;
+  padding: 8px 15px;
+  color: $white;
+
+  border: none;
+  font-weight: bold;
+  border-radius: $borderRadiusSmall;
+  user-select: none;
+  position: relative;
+
+  &.color-green {
     background-color: #0a980a;
-    border: none;
-    font-weight: bold;
-    border-radius: $borderRadiusSmall;
-    cursor: pointer;
-    user-select: none;
-    position: relative;
-    
+
     &:hover {
       background-color: #21b821;
     }
-  
+
     &:active {
       background-color: #39d039;
     }
-  
-    &.disabled {
+  }
+
+  &.color-red {
+    background-color: $red;
+
+    &:hover {
+      background-color: color.scale($red, $lightness: 10%);
+    }
+
+    &:active {
+      background-color: color.scale($red, $lightness: 30%);
+    }
+  }
+
+  &.disabled {
       pointer-events: none;
       background-color: #929292;
       color: #d9d9d9;
