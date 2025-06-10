@@ -11,8 +11,12 @@ import { useForm } from "../../../lib/form"
 import { zGetIdeasTrpcInput } from "@mysite/backend/src/router/ideas/getIdeas/input"
 import { Input } from "../../../components/Input"
 import { useDebounceValue } from 'usehooks-ts'
+import { withPageWrapper } from "../../../lib/pageWrapper"
 
-export const AllIdeasPage = () => {
+export const AllIdeasPage = withPageWrapper({
+  title: 'All ideas',
+  isTitleExact: true,
+})(() => {
     const { formik } = useForm({
       initialValues: {search: ''},
       validationSchema: zGetIdeasTrpcInput.pick({ search: true }),
@@ -32,6 +36,7 @@ export const AllIdeasPage = () => {
     
     return (
         <Segment title="All ideas">
+
           <div className={css.filter}>
             <Input maxWidth={'100%'} label="Search" name="search" formik={formik}/>
           </div>
@@ -80,4 +85,4 @@ export const AllIdeasPage = () => {
       )}
     </Segment>
       )
-} 
+})

@@ -1,25 +1,36 @@
-import crypto from 'crypto'
 import { trpc } from '../../../lib/trpc'
 import { zSignUpTrpcInput } from './input'
 import { getPasswordHash } from '../../../utils/getPasswordHash'
 import { signJWT } from '../../../utils/signJWT'
+import { sendWelcomeEmail } from '../../../lib/emails'
 
 export const signUpTrpcRoute = trpc.procedure.input(zSignUpTrpcInput).mutation(async ({ctx, input}) => {
-    const exUser = await ctx.prisma.user.findUnique({
+    const exUserWithNick = await ctx.prisma.user.findUnique({
+    where: {
+      nick: input.nick,
+    },
+    })
+    if (exUserWithNick) {
+        throw new Error('User with this nick already exists')
+    }
+    const exUserWithEmail = await ctx.prisma.user.findUnique({
         where: {
-            nick: input.nick,
+        email: input.email,
         },
     })
-    if (exUser) {
-        throw new Error('User already exists')
+    if (exUserWithEmail) {
+        throw new Error('User with this email already exists')
     }
     const user = await ctx.prisma.user.create({
         data: {
-            nick: input.nick,
-            password: getPasswordHash(input.password),
-        }
+        nick: input.nick,
+        email: input.email,
+        password: getPasswordHash(input.password),
+        },
     })
 
+
+    void sendWelcomeEmail({user})
     const token = signJWT(user.id)
     return {token}
 })

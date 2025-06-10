@@ -6,6 +6,7 @@ import { useAppContext, type AppContext } from './ctx'
 import { getAllIdeasRoute } from './routes'
 import { NotFoundPage } from '../pages/other/NotFoundPage'
 import { Loader } from '../components/Loader'
+import { Helmet } from 'react-helmet-async'
 
 class CheckExistsError extends Error {}
 const checkExistsFn = <T,>(value: T, message?: string): NonNullable<T> => {
@@ -58,6 +59,9 @@ type PageWrapperProps<TProps extends Props, TQueryResult extends QueryResult | u
 
   showLoaderOnFetching?: boolean
 
+  title: string | ((titleProps: HelperProps<TQueryResult> & TProps) => string)
+  isTitleExact?: boolean
+
   useQuery?: () => TQueryResult
   setProps?: (setPropsProps: SetPropsProps<TQueryResult>) => TProps
   Page: React.FC<TProps>
@@ -76,6 +80,8 @@ const PageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult
   checkExistsMessage,
   useQuery,
   setProps,
+  title,
+  isTitleExact = false,
   Page,
   showLoaderOnFetching = true,
 }: PageWrapperProps<TProps, TQueryResult>) => {
@@ -128,7 +134,12 @@ const PageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult
 
   try {
     const props = setProps?.({ ...helperProps, checkExists: checkExistsFn, checkAccess: checkAccessFn, getAuthorizedMe }) as TProps
-    return <Page {...props} />
+    const calculatedTitle = typeof title === 'function' ? title({ ...helperProps, ...props}) : title
+    const exactTitle = isTitleExact ? calculatedTitle : `${calculatedTitle} - Ideanick`
+    return (<>
+    <Helmet><title>{exactTitle}</title></Helmet>
+    <Page {...props} />
+    </>)
   } catch (error) {
     if (error instanceof CheckExistsError) {
       return <ErrorPageComponent title={checkExistsTitle} message={error.message || checkExistsMessage} />
