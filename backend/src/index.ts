@@ -6,6 +6,7 @@ import { AppContext, createAppContext } from "./lib/ctx"
 import { applyPassportToExpressApp } from "./lib/passport"
 import { env } from './lib/env'
 import { presetDb } from "./scripts/presetDb"
+import { sendWelcomeEmail } from "./lib/emails"
 
 void (async () => {
     let ctx: AppContext | null = null
@@ -25,6 +26,7 @@ void (async () => {
         expressApp.listen(env.PORT, () => {
             console.info('server is running on port 3000')
         })
+        void sendWelcomeEmail({user: {nick: 'test', email: `${Math.random().toString()}@example.com`}})
      } catch (error) {
          console.error(error)
          await ctx?.stop()

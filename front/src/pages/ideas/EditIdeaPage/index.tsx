@@ -8,7 +8,7 @@ import { FormItems } from '../../../components/FormItems'
 import { Input } from '../../../components/Input'
 import { Segment } from '../../../components/Segment'
 import { TextArea } from '../../../components/TextArea'
-import { type EditIdeaRouteParams, getViewIdeaRoute } from '../../../lib/routes'
+import { getEditIdeaRoute, getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 import { withPageWrapper } from '../../../lib/pageWrapper'
 import { canEditIdea } from '@mysite/backend/src/utils/can'
@@ -17,7 +17,7 @@ import { canEditIdea } from '@mysite/backend/src/utils/can'
 export const EditIdeaPage = withPageWrapper({
   authorizedOnly: true,
   useQuery: () => {
-    const { idea } = useParams() as EditIdeaRouteParams
+    const { idea } = getEditIdeaRoute.useParams()
     return trpc.getIdea.useQuery({idea}) 
   },
 
