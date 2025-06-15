@@ -1,4 +1,4 @@
-import { getNewIdeaRoute } from './../../node_modules/@mysite/front/src/lib/routes';
+import { NewIdeaRoute } from './../../node_modules/@mysite/front/src/lib/routes';
 import { promises as fs } from 'fs'
 import path from 'path'
 import { type Idea, type User } from '@prisma/client'
@@ -6,7 +6,6 @@ import fg from 'fast-glob'
 import _ from 'lodash'
 import { env } from './env'
 import Handlebars from 'handlebars'
-import { NewIdeaRoute } from "@mysite/front/src/lib/routes"
 
 const getHbrTemplates = _.memoize(async () => {
   const htmlPathsPattern = path.resolve(__dirname, '../emails/dist/**/*.html')
@@ -66,7 +65,7 @@ export const sendWelcomeEmail = async ({ user }: { user: Pick<User, 'nick' | 'em
     templateName: 'welcome',
     templateVariables: {
       userNick: user.nick,
-      addIdeaUrl: `${getNewIdeaRoute({abs: true})}`,
+      addIdeaUrl: `${NewIdeaRoute({abs: true})}`,
     },
   })
 }
