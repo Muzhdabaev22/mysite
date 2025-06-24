@@ -1,3 +1,5 @@
 packages:
+  - shared
   - front
   - backend
+  

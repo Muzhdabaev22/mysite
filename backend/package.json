@@ -34,8 +34,10 @@
   },
   "dependencies": {
     "@mysite/front": "workspace:*",
+    "@mysite/shared": "workspace:*",
     "@prisma/client": "^6.7.0",
     "@trpc/server": "^10.45.2",
+    "axios": "^1.10.0",
     "cors": "^2.8.5",
     "cron": "^4.3.1",
     "dotenv": "^16.5.0",
@@ -47,8 +49,10 @@
     "mjml": "^4.15.3",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
+    "serialize-error": "8.1.0",
     "superjson": "^2.2.2",
     "trpc-playground": "^1.0.4",
+    "winston": "^3.17.0",
     "zod": "^3.24.2"
   }
 }

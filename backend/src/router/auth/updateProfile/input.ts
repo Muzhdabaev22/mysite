@@ -1,6 +1,7 @@
 import { z } from 'zod'
+import { zNickRequired } from '../../../../../shared/src/zod'
 
 export const zUpdateProfileTrpcInput = z.object({
-    nick: z.string().min(1).regex(/^[a-z0-9-]+$/, 'Nick may contain only lowercase letters, numbers and dashes'),
+    nick: zNickRequired,
     name: z.string().max(50).default(''),
 })

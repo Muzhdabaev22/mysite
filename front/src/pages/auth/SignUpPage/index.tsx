@@ -9,6 +9,7 @@ import { trpc } from '../../../lib/trpc'
 import Cookies from 'js-cookie'
 import { useForm } from '../../../lib/form'
 import { withPageWrapper } from '../../../lib/pageWrapper'
+import { zPasswordsMustBeTheSame, zStringRequired } from '../../../../../shared/src/zod'
 
 export const SignUpPage = withPageWrapper({
   redirectAuthorized: true,
@@ -25,17 +26,9 @@ export const SignUpPage = withPageWrapper({
     },
     validationSchema: zSignUpTrpcInput
       .extend({
-        passwordAgain: z.string().min(1),
+        passwordAgain: zStringRequired,
       })
-      .superRefine((val, ctx) => {
-        if (val.password !== val.passwordAgain) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: 'Passwords must be the same',
-            path: ['passwordAgain'],
-          })
-        }
-    }),
+      .superRefine(zPasswordsMustBeTheSame('password', 'passwordAgain')),
 
     onSubmit: async (values) => {
         const { token } = await signUp.mutateAsync(values)

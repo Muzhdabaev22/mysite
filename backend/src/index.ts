@@ -1,12 +1,13 @@
+import { env } from './lib/env'
 import express from "express"
 import { trpcRouter } from "./router/index"
 import cors from "cors"
 import { applyTrpcToExpressApp } from "./lib/trpc"
 import { AppContext, createAppContext } from "./lib/ctx"
 import { applyPassportToExpressApp } from "./lib/passport"
-import { env } from './lib/env'
 import { presetDb } from "./scripts/presetDb"
 import { applyCron } from "./lib/cron"
+import { logger } from './lib/logger'
 
 void (async () => {
     let ctx: AppContext | null = null
@@ -24,11 +25,11 @@ void (async () => {
         await applyTrpcToExpressApp(expressApp, ctx, trpcRouter)
         applyCron(ctx)
         expressApp.listen(env.PORT, () => {
-            console.info('server is running on port 3000')
+            logger.info('express', `Listening at http://localhost:${env.PORT}`)
         })
         
      } catch (error) {
-         console.error(error)
+         logger.error('app', error)
          await ctx?.stop()
     }
 })()

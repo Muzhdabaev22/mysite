@@ -1,4 +1,4 @@
-import { NewIdeaRoute } from './../../node_modules/@mysite/front/src/lib/routes';
+import { getViewIdeaRoute, NewIdeaRoute } from './../../node_modules/@mysite/front/src/lib/routes';
 import { promises as fs } from 'fs'
 import path from 'path'
 import { type Idea, type User } from '@prisma/client'
@@ -6,6 +6,7 @@ import fg from 'fast-glob'
 import _ from 'lodash'
 import { env } from './env'
 import Handlebars from 'handlebars'
+import { logger } from './logger';
 
 const getHbrTemplates = _.memoize(async () => {
   const htmlPathsPattern = path.resolve(__dirname, '../emails/dist/**/*.html')
@@ -44,7 +45,7 @@ const sendEmail = async ({
       homeUrl: env.WEBAPP_URL,
     }
     const html = await getEmailHtml(templateName, fullTemplateVaraibles)
-    console.info('sendEmail', {
+    logger.info('emails', 'sendEmail', {
       to,
       subject,
       templateName,
@@ -53,7 +54,11 @@ const sendEmail = async ({
     })
     return { ok: true }
   } catch (error) {
-    console.error(error)
+    logger.error('email', error, {
+      to,
+      subject,
+      templateName
+    })
     return { ok: false }
   }
 }
@@ -77,6 +82,23 @@ export const sendIdeaBlockedEmail = async ({ user, idea }: { user: Pick<User, 'e
     templateName: 'ideaBlocked',
     templateVariables: {
       ideaNick: idea.nick,
+    },
+  })
+}
+
+export const sendMostLikedIdeasEmail = async ({
+  user,
+  ideas,
+}: {
+  user: Pick<User, 'email'>
+  ideas: Array<Pick<Idea, 'nick' | 'name'>>
+}) => {
+  return await sendEmail({
+    to: user.email,
+    subject: 'Most Liked Ideas!',
+    templateName: 'mostLikedIdeas',
+    templateVariables: {
+      ideas: ideas.map((idea) => ({ name: idea.name, url: getViewIdeaRoute({abs:true, idea: idea.nick })}))
     },
   })
 }
