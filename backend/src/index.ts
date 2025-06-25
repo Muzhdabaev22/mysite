@@ -29,7 +29,8 @@ void (async () => {
         })
         
      } catch (error) {
-         logger.error('app', error)
-         await ctx?.stop()
+        const normalizedError = error instanceof Error ? error : new Error(String(error))
+        logger.error('app', normalizedError)
+        await ctx?.stop()
     }
 })()

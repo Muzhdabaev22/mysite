@@ -54,7 +54,8 @@ const sendEmail = async ({
     })
     return { ok: true }
   } catch (error) {
-    logger.error('email', error, {
+    const normalizedError = error instanceof Error ? error : new Error(String(error))
+    logger.error('email', normalizedError, {
       to,
       subject,
       templateName

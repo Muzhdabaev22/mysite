@@ -1,7 +1,7 @@
-import { trpc } from '../../../lib/trpc'
+import { trpcLoggedProcedure } from '../../../lib/trpc'
 import { zSetIdeaLikeTrpcInput } from './input'
 
-export const setIdeaLikeTrpcRoute = trpc.procedure.input(zSetIdeaLikeTrpcInput).mutation(async ({  ctx, input }) => {
+export const setIdeaLikeTrpcRoute = trpcLoggedProcedure.input(zSetIdeaLikeTrpcInput).mutation(async ({  ctx, input }) => {
   const { ideaId, isLikedByMe } = input
   if (!ctx.me) {
     throw new Error('UNAUTHORIZED')
