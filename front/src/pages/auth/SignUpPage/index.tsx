@@ -1,5 +1,4 @@
 import { zSignUpTrpcInput } from '@mysite/backend/src/router/auth/signUp/input'
-import { z } from 'zod'
 import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
 import { FormItems } from '../../../components/FormItems'

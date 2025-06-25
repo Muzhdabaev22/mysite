@@ -1,11 +1,13 @@
+import { serializeError } from 'serialize-error';
 import winston from 'winston'
 import { env } from './env'
-import { serializeError } from 'serialize-error'
 import { EOL } from 'os'
 import _ from 'lodash'
 import pc from 'picocolors'
 import { MESSAGE } from 'triple-beam'
 import * as yaml from 'yaml'
+import debug from 'debug'
+import { deepMap } from '../utils/deepMap';
 
 export const winstonLogger = winston.createLogger({
   level: 'debug',
@@ -59,51 +61,34 @@ export const winstonLogger = winston.createLogger({
   ],
 })
 
-// --- HELPERS ---
 
-function sanitizeMeta(meta: Record<string, any>): Record<string, any> {
-  const cleanedMeta: Record<string, any> = {}
-
-  for (const key in meta) {
-    const value = meta[key]
-
-    if (value instanceof Error) {
-      cleanedMeta[key] = {
-        message: value.message,
-        stack: value.stack,
-      }
-    } else if (typeof value === 'object' && value !== null) {
-      try {
-        cleanedMeta[key] = JSON.parse(JSON.stringify(value))
-      } catch {
-        cleanedMeta[key] = 'Cyclic or non-serializable object'
-      }
-    } else {
-      cleanedMeta[key] = value
+type Meta = Record<string, any> | undefined
+const prettifyMeta = (meta: Meta): Meta => {
+  return deepMap(meta, ({key, value}) => {
+    if (['email', 'password', 'newPassword', 'oldPassword', 'token', 'text', 'description'].includes(key)) {
+      return '🙈'
     }
-  }
-
-  return cleanedMeta
+    return value
+  })
 }
 
-// --- LOGGER ---
-
 export const logger = {
-  info: (logType: string, message: string, meta?: Record<string, any>) => {
-    winstonLogger.info(message, { logType, ...sanitizeMeta(meta || {}) })
+  info: (logType: string, message: string, meta?: Meta) => {
+    if (!debug.enabled(`mysite:${logType}`)) {
+      return
+    }
+    winstonLogger.info(message, { logType, ...prettifyMeta(meta) })
   },
-  error: (logType: string, error: Error, meta?: Record<string, any>) => {
-    const sanitizedMeta = sanitizeMeta({
-      error: error,
-      errorStack: error.stack,
-      ...meta,
-    })
-
-    const errorMessage = typeof error.message === 'string' ? error.message : 'Unknown error'
-
-    winstonLogger.error(errorMessage, {
+  error: (logType: string, error: Error, meta?: Meta) => {
+    if (!debug.enabled(`mysite:${logType}`)) {
+      return
+    }
+    const serializedError = serializeError(error)
+    winstonLogger.error(serializedError.message || 'Unknown error', {
       logType,
-      ...sanitizedMeta,
+      error,
+      errorStack: serializedError.stack,
+      ...prettifyMeta(meta),
     })
   },
 }

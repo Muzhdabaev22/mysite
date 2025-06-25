@@ -1,9 +1,8 @@
-import { zEnvHost, zEnvNonemptyTrimmed, zEnvNonemptyTrimmedRequiredOnNotLocal } from './../../../shared/src/zod';
+import { zEnvHost, zEnvNonemptyTrimmed } from './../../../shared/src/zod';
 import * as dotenv from 'dotenv'
 import { z } from 'zod'
 
 dotenv.config()
-
 
 
 const zEnv = z.object({
@@ -14,6 +13,7 @@ const zEnv = z.object({
     PASSWORD_SALT: zEnvNonemptyTrimmed,
     INITIAL_ADMIN_PASSWORD: zEnvNonemptyTrimmed,
     WEBAPP_URL: zEnvNonemptyTrimmed,
+    DEBUG: zEnvNonemptyTrimmed,
 //   BREVO_API_KEY: zEnvNonemptyTrimmedRequiredOnNotLocal,
 //   FROM_EMAIL_NAME: zEnvNonemptyTrimmed,
 //   FROM_EMAIL_ADDRESS: zEnvNonemptyTrimmed,

@@ -1,7 +1,7 @@
 import { zUpdateIdeaTrpcInput } from '@mysite/backend/src/router/ideas/updateIdea/input'
 import { useForm} from '../../../lib/form'
 import pick from 'lodash/pick'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
 import { FormItems } from '../../../components/FormItems'
