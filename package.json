@@ -5,6 +5,7 @@
     "scripts": {
         "b": "pnpm --filter @mysite/backend",
         "f": "pnpm --filter @mysite/front",
+        "sh": "pnpm --filter @mysite/shared",
         "test": "pnpm -r test",
         "types": "concurrently 'pnpm b types' 'pnpm f types'",
         "lint": "concurrently 'pnpm b lint' 'pnpm w lint'"

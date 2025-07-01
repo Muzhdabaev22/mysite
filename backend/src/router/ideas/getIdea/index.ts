@@ -1,7 +1,7 @@
 import { trpcLoggedProcedure } from '../../../lib/trpc'
-import _ from 'lodash'
 import { zGetIdeaTrpcInput } from './input'
- 
+import { omit } from '@mysite/shared/src/omit'
+
 export const getIdeaTrpcRoute = trpcLoggedProcedure.input(
     zGetIdeaTrpcInput
   ).query(async ({ctx, input}) => {
@@ -39,7 +39,7 @@ export const getIdeaTrpcRoute = trpcLoggedProcedure.input(
     
     const isLikedByMe = !!rawIdea?.ideasLikes.length
     const likesCount = rawIdea?._count.ideasLikes || 0
-    const idea = rawIdea && { ..._.omit(rawIdea, ['ideasLikes', '_count']), isLikedByMe, likesCount }
+    const idea = rawIdea && { ...omit(rawIdea, ['ideasLikes', '_count']), isLikedByMe, likesCount }
 
     return {idea}
   })

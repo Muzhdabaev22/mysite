@@ -2,12 +2,13 @@ import { serializeError } from 'serialize-error';
 import winston from 'winston'
 import { env } from './env'
 import { EOL } from 'os'
-import _ from 'lodash'
+import { omit } from '@mysite/shared/src/omit'
 import pc from 'picocolors'
 import { MESSAGE } from 'triple-beam'
 import * as yaml from 'yaml'
 import debug from 'debug'
 import { deepMap } from '../utils/deepMap';
+import _ from 'lodash'
 
 export const winstonLogger = winston.createLogger({
   level: 'debug',
@@ -34,7 +35,7 @@ export const winstonLogger = winston.createLogger({
         const levelAndType = `${logData.level} ${logData.logType}`
         const topMessage = `${setColor(levelAndType)} ${pc.green(timestamp)}${EOL}${logData.message}`
 
-        const visibleMessageTags = _.omit(logData, [
+        const visibleMessageTags = omit(logData, [
           'level',
           'logType',
           'timestamp',

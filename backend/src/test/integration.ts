@@ -7,6 +7,8 @@ import { deepMap } from '../utils/deepMap'
 import { getPasswordHash } from '../utils/getPasswordHash'
 import { type ExpressRequest } from '../utils/types'
 import { env } from '../lib/env'
+import { omit } from '@mysite/shared/src/omit'
+
 
 if (env.NODE_ENV !== 'test') {
   throw new Error("Run integration tests only with NODE_ENV=test")
@@ -50,7 +52,7 @@ export const createUser = async ({ user = {}, number = 1 }: { user?: Partial<Use
       nick: `user${number}`,
       email: `user${number}@example.com`,
       password: getPasswordHash(user.password || '1234'),
-      ..._.omit(user, ['password']),
+      ...omit(user, ['password']),
     },
   })
 }
