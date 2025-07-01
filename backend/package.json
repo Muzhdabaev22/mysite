@@ -17,6 +17,7 @@
     "prisma": "^6.7.0"
   },
   "scripts": {
+    "test": "jest",
     "dev": "ts-node-dev --watch ./src/emails/dist,./.env --rs --exit-child ./src/index.ts",
     "build-emails": "rimraf ./src/emails/dist && mkdir ./src/emails/dist && mjml ./src/emails/[!_]*.mjml -o ./src/emails/dist",
     "watch-emails": "mjml -w ./src/emails/[!_]*.mjml -o ./src/emails/dist",
@@ -42,6 +43,7 @@
     "axios": "^1.10.0",
     "cors": "^2.8.5",
     "cron": "^4.3.1",
+    "date-fns": "^4.1.0",
     "debug": "^4.4.1",
     "dotenv": "^16.5.0",
     "express": "^4.21.2",

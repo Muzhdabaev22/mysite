@@ -1,3 +1,4 @@
+import { ExpressRequest } from './../utils/types';
 import { TrpcRouter } from './../router/index';
 import { inferAsyncReturnType, initTRPC } from "@trpc/server"
 import {type Express} from 'express'
@@ -5,13 +6,19 @@ import * as trpcExpress from "@trpc/server/adapters/express"
 import { AppContext } from './ctx';
 import superjson from 'superjson'
 import {expressHandler } from 'trpc-playground/handlers/express'
-import { ExpressRequest } from '../utils/types';
 import { logger } from './logger';
 
-const getCreateTrpcContext = (appContext: AppContext) => ({ req }: trpcExpress.CreateExpressContextOptions) => ({
-    ...appContext,
-    me: (req as ExpressRequest).user || null
+export const getTrpcContext = ({appContext, req}: {appContext: AppContext, req: ExpressRequest}) => ({
+  ...appContext,
+  me: req.user || null
 })
+
+const getCreateTrpcContext =
+  (appContext: AppContext) =>
+  ({ req }: trpcExpress.CreateExpressContextOptions) =>
+    getTrpcContext({ appContext, req: req as ExpressRequest })
+
+
 
 type TrpcContext = inferAsyncReturnType<ReturnType<typeof getCreateTrpcContext>>
 
