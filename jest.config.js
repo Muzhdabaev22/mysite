@@ -5,7 +5,4 @@ module.exports = {
     passWithNoTests: true,
     verbose: true,
     prettierPath: null,
-    transformIgnorePatterns: [
-  '/node_modules/.pnpm/(?!superjson)',
-],
 }

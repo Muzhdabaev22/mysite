@@ -6,20 +6,25 @@ import fs from 'fs'
 
 dotenv.config()
 
-const findEnvFilePath = (dir: string): string | null => {
-  const maybeEnvFilePath = path.join(dir, '.env')
-  if (fs.existsSync(maybeEnvFilePath)) {
-    return maybeEnvFilePath
+const findEnvFilePath = (dir: string, pathPart: string): string | null => {
+    const maybeEnvFilePath = path.join(dir, pathPart)
+    if (fs.existsSync(maybeEnvFilePath)) {
+      return maybeEnvFilePath
+    }
+    if (dir === '/') {
+      return null
+    }
+    return findEnvFilePath(path.dirname(dir), pathPart)
   }
-  if (dir === '/') {
-    return null
+  const webappEnvFilePath = findEnvFilePath(__dirname, 'webapp/.env')
+  if (webappEnvFilePath) {
+    dotenv.config({ path: webappEnvFilePath, override: true })
+    dotenv.config({ path: `${webappEnvFilePath}.${process.env.NODE_ENV}`, override: true })
   }
-  return findEnvFilePath(path.dirname(dir))
-}
-const envFilePath = findEnvFilePath(__dirname)
-if (envFilePath) {
-  dotenv.config({ path: envFilePath, override: true })
-  dotenv.config({ path: `${envFilePath}.${process.env.NODE_ENV}`, override: true })
+  const backendEnvFilePath = findEnvFilePath(__dirname, 'backend/.env')
+  if (backendEnvFilePath) {
+    dotenv.config({ path: backendEnvFilePath, override: true })
+    dotenv.config({ path: `${backendEnvFilePath}.${process.env.NODE_ENV}`, override: true })
 }
 
 
