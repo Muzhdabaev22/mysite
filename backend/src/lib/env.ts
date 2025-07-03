@@ -1,4 +1,4 @@
-import { zEnvHost, zEnvNonemptyTrimmed } from './../../../shared/src/zod';
+import { zEnvHost, zEnvNonemptyTrimmed, zEnvNonemptyTrimmedRequiredOnNotLocal } from './../../../shared/src/zod';
 import * as dotenv from 'dotenv'
 import { z } from 'zod'
 import path from 'path'
@@ -46,6 +46,9 @@ const zEnv = z.object({
       (val) => process.env.HOST_ENV === 'local' || process.env.NODE_ENV !== 'production' || (!!val && val.length > 0),
       'Required on not local host on production'
     ),
+    CLOUDINARY_API_KEY: zEnvNonemptyTrimmedRequiredOnNotLocal,
+    CLOUDINARY_API_SECRET: zEnvNonemptyTrimmedRequiredOnNotLocal,
+    CLOUDINARY_CLOUD_NAME: zEnvNonemptyTrimmed,
 //   BREVO_API_KEY: zEnvNonemptyTrimmedRequiredOnNotLocal,
 //   FROM_EMAIL_NAME: zEnvNonemptyTrimmed,
 //   FROM_EMAIL_ADDRESS: zEnvNonemptyTrimmed,

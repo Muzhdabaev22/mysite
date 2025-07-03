@@ -11,6 +11,7 @@ import { updateProfileTrpcRoute } from "./auth/updateProfile"
 import { updatePasswordTrpcRoute } from "./auth/updatePassword"
 import { setIdeaLikeTrpcRoute } from "./ideas/setIdeaLike"
 import { blockIdeaTrpcRoute } from "./ideas/blockIdea"
+import { prepareCloudinaryUploadTrpcRoute } from "./upload/prepareCloudinaryUpload"
 
 export const trpcRouter = createTrpcRouter({
   getIdea: getIdeaTrpcRoute,
@@ -23,7 +24,8 @@ export const trpcRouter = createTrpcRouter({
   updateProfile: updateProfileTrpcRoute,
   updatePassword: updatePasswordTrpcRoute,
   setIdeaLike: setIdeaLikeTrpcRoute,
-  blockIdea: blockIdeaTrpcRoute
+  blockIdea: blockIdeaTrpcRoute,
+  prepareCloudinaryUpload: prepareCloudinaryUploadTrpcRoute,
 })
 
 export type TrpcRouter = typeof trpcRouter

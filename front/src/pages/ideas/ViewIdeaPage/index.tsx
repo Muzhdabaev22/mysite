@@ -11,6 +11,9 @@ import { useForm } from '../../../lib/form'
 import { FormItems } from '../../../components/FormItems'
 import { Alert } from '../../../components/Alert'
 import { Icon } from '../../../components/Icon'
+import { getAvatarUrl, getCloudinaryUploadUrl } from '@mysite/shared/src/cloudinary'
+import ImageGallery from 'react-image-gallery'
+
 
 const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['idea']> }) => {
   const trpcUtils = trpc.useContext()
@@ -84,9 +87,26 @@ export const ViewIdeaPage = withPageWrapper({
   <Segment title={idea.name} description={idea.description}>
     <div className={css.createdAt}>Created At: {format(idea.createdAt, 'yyyy-MM-dd')}</div>
     <div className={css.author}>
-      Author: {idea.author.nick}
-      {idea.author.name ? ` (${idea.author.name})` : ''}
+      <img className={css.avatar} alt="" src={getAvatarUrl(idea.author.avatar, 'small')} />
+      <div className={css.name}>
+        Author:
+        <br />
+        {idea.author.nick}
+        {idea.author.name ? ` (${idea.author.name})` : ''}
+      </div>
     </div>
+    {!!idea.images.length && (
+      <div className={css.gallery}>
+        <ImageGallery
+          showPlayButton={false}
+          showFullscreenButton={false}
+          items={idea.images.map((image) => ({
+            original: getCloudinaryUploadUrl(image, 'image', 'large'),
+            thumbnail: getCloudinaryUploadUrl(image, 'image', 'preview'),
+          }))}
+        />
+      </div>
+    )}
     <div className={css.text} dangerouslySetInnerHTML={{ __html: idea.text }} />
     <div className={css.likes}>
       Likes: {idea.likesCount}

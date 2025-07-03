@@ -12,6 +12,7 @@ import { getEditIdeaRoute, getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 import { withPageWrapper } from '../../../lib/pageWrapper'
 import { canEditIdea } from '@mysite/backend/src/utils/can'
+import { UploadsToCloudinary } from '../../../components/UploadsToCloudinary'
 
 
 export const EditIdeaPage = withPageWrapper({
@@ -34,7 +35,7 @@ export const EditIdeaPage = withPageWrapper({
   const navigate = useNavigate()
   const updateIdea = trpc.updateIdea.useMutation()
   const {formik, alertProps, buttonProps } = useForm({
-    initialValues: pick(idea, ['name', 'nick', 'description', 'text']),
+    initialValues: pick(idea, ['name', 'nick', 'description', 'text', 'images']),
     validationSchema: zUpdateIdeaTrpcInput.omit({ ideaId: true }),
     onSubmit: async (values) => {
         await updateIdea.mutateAsync({ ideaId: idea.id, ...values })
@@ -52,6 +53,7 @@ export const EditIdeaPage = withPageWrapper({
           <Input label="Nick" name="nick" formik={formik} />
           <Input label="Description" name="description" maxWidth={500} formik={formik} />
           <TextArea label="Text" name="text" formik={formik} />
+          <UploadsToCloudinary label="Images" name="images" type="image" preset="preview" formik={formik} />
           <Alert {...alertProps} />
           <Button {...buttonProps }>Update Idea</Button>
         </FormItems>

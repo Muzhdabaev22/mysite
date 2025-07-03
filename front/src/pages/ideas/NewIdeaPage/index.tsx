@@ -8,6 +8,7 @@ import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
 import { FormItems } from '../../../components/FormItems'
 import { withPageWrapper } from '../../../lib/pageWrapper'
+import { UploadsToCloudinary } from '../../../components/UploadsToCloudinary'
 
 
 export const NewIdeaPage = withPageWrapper({
@@ -21,6 +22,7 @@ export const NewIdeaPage = withPageWrapper({
         nick: '', 
         description: '', 
         text: '',
+        images: [],
       },
       validationSchema: zCreateIdeaTrpcInput,
       onSubmit: async (values) => {
@@ -42,6 +44,7 @@ export const NewIdeaPage = withPageWrapper({
           <Input name='nick' label='Nick' formik={formik} />
           <Input name='description' label='Desctiption' formik={formik} />
           <TextArea name='text' label='Text' formik={formik} maxWidth={500}/>
+          <UploadsToCloudinary label="Images" name="images" type="image" preset="preview" formik={formik} />
           <Alert {...alertProps} />
           <Button {...buttonProps}>Create idea</Button>
         </FormItems>
