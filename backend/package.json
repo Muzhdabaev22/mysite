@@ -15,7 +15,6 @@
     "@types/triple-beam": "^1.3.5",
     "eslint-plugin-node": "^11.1.0",
     "jest": "^30.0.4",
-    "prisma": "^6.7.0",
     "ts-jest": "^29.4.0"
   },
   "scripts": {
@@ -58,6 +57,7 @@
     "mjml": "^4.15.3",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
+    "prisma": "^6.7.0",
     "picocolors": "^1.1.1",
     "serialize-error": "8.1.0",
     "superjson": "^2.2.2",
